@@ -1,0 +1,153 @@
+Milestone 2 Analytical Report
+ClimateScope – Milestone 2: Core Analysis & Visualization Design
+1. Objective
+
+Milestone 2 focused on:
+
+Performing statistical and seasonal analysis
+
+Identifying extreme weather events
+
+Comparing regional climate behavior
+
+Selecting effective visualization techniques
+
+Designing the conceptual layout of an interactive dashboard
+
+2. Statistical Analysis
+
+Descriptive statistics were computed for:
+
+Temperature
+
+Humidity
+
+Wind speed
+
+Precipitation
+
+Key observations:
+
+Temperature values showed moderate spread across regions
+
+Precipitation distribution was right-skewed, indicating occasional heavy rainfall
+
+Humidity exhibited regional clustering patterns
+
+Correlation heatmaps revealed relationships such as:
+
+Temperature and humidity showing weak-to-moderate correlation
+
+Wind speed largely independent from precipitation
+
+3. Seasonal Patterns and Trends
+
+Monthly aggregation highlighted clear seasonal cycles:
+
+Temperature peaks during summer months
+
+Rainfall increases during monsoon or wet seasons
+
+Humidity trends follow rainfall intensity in many regions
+
+Seasonal variation differed significantly across countries, confirming strong geographical climate diversity.
+
+4. Extreme Weather Events
+
+Extreme temperature events were detected using:
+
+1st percentile (extreme low)
+
+99th percentile (extreme high)
+
+Findings:
+
+Certain years recorded noticeably higher extreme-event counts
+
+A small subset of countries contributed disproportionately to extremes
+
+Extreme events displayed temporal clustering rather than uniform distribution
+
+These insights are critical for climate risk awareness and monitoring.
+
+5. Regional Weather Comparison
+
+Country-level aggregation produced:
+
+Average temperature per country
+
+Total precipitation per country
+
+Mean humidity per country
+
+Comparative analysis showed:
+
+Clear separation between hot and cool regions
+
+Significant rainfall imbalance across countries
+
+Humidity patterns aligned with precipitation zones
+
+This confirms strong regional climate variability.
+
+6. Visualization Design Choices
+
+The following visualizations were selected for clarity and interpretability:
+
+Histograms → variable distributions
+
+Correlation heatmaps → inter-variable relationships
+
+Line charts → seasonal and temporal trends
+
+Scatter plots → extreme event behavior
+
+Bar charts → regional comparisons
+
+Boxplots → distribution differences across countries
+
+These collectively support multi-level climate insight exploration.
+
+7. Dashboard Wireframe Concept
+
+The proposed interactive dashboard layout:
+
+Top Section
+
+Title and global filters (Year, Country, Month)
+
+Middle Section
+
+Line charts for temperature and rainfall trends
+
+Bottom Section
+
+Correlation heatmap
+
+Regional comparison bar charts
+
+Extreme-event visualizations
+
+This structure ensures:
+
+Logical information flow
+
+Clear comparison across regions and time
+
+User-friendly analytical exploration
+
+8. Milestone 2 Conclusion
+
+Milestone 2 successfully delivered:
+
+Comprehensive statistical understanding
+
+Detection and analysis of extreme weather events
+
+Regional climate comparison insights
+
+Well-justified visualization strategy
+
+A structured dashboard design blueprint
+
+This completes the core analytical foundation required for building the final interactive ClimateScope dashboard in the next milestone.
