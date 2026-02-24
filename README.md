@@ -115,14 +115,10 @@ This enables global-scale analysis across seasons, regions, and time.
 
 ### Visualization
 - Plotly
-- Streamlit
+- Tableau
 
 ### Storage
-- CSV / Parquet files
-
-### Optional Tools
-- folium
-- python-dotenv
+- CSV file
 
 ---
 
