@@ -1,106 +1,183 @@
-# ClimateScope  
+# ClimateScope: Visualizing Global Weather Trends and Extreme Events
 
 ClimateScope is a simple idea with a big purpose:  
-**take massive global weather data and make it understandable at a glance.**
+**turn massive global weather data into something people can actually understand.**
 
-Weather isn’t just numbers.  
-It’s seasons shifting, regions behaving differently, and extreme events quietly forming patterns over time.
+Weather is more than numbers.  
+It’s seasonal rhythms, regional contrasts, and extreme events that quietly shape long-term patterns.
 
-This project turns raw climate data into **clear visuals, meaningful insights, and an interactive experience** anyone can explore.
-
----
-
-## Why ClimateScope exists
-
-There’s no shortage of climate data.  
-But most of it is buried in spreadsheets, APIs, or dense reports.
-
-What’s missing is clarity.
-
-ClimateScope was built to answer questions like:
-
-- How does weather really change across seasons?
-- Which regions experience the most extremes?
-- Are there patterns we usually overlook?
-- What does global climate behavior look like over time?
-
-Instead of static graphs, the goal is to create a **living, explorable view of Earth’s weather**.
+This project transforms raw climate data into clear visuals, meaningful insights, and an interactive platform that anyone can explore.
 
 ---
 
-## The data behind the project
+## Project Objective
 
-This project uses the **Global Weather Repository** from Kaggle,  
-a continuously updated collection of worldwide daily weather observations.
+The objective of ClimateScope is to analyze and visually represent global weather patterns using the Global Weather Repository dataset from Kaggle.
 
-It includes key signals such as:
+The project focuses on:
+
+- Identifying seasonal trends  
+- Comparing regional climate behavior  
+- Detecting extreme weather events  
+- Highlighting anomalies over time  
+
+The end goal is to build an accessible, data-driven visualization platform that supports climate awareness, exploration, and research.
+
+---
+
+## Dataset
+
+**Source:** Global Weather Repository (Kaggle)  
+https://www.kaggle.com/datasets/nelgiriyewithana/global-weather-repository/data
+
+The dataset contains daily updated worldwide weather observations.
+
+### Key Variables
 
 - Temperature  
 - Humidity  
 - Precipitation  
-- Wind speed  
-- Geographic location  
-- Time-based records  
+- Wind Speed  
+- Geographic Location  
+- Date and Time  
 
-This makes it possible to explore **true global-scale climate behavior**, not just one country or season.
-
----
-
-## How the project unfolds
-
-ClimateScope follows a clear path from raw data to real insight.
-
-### 1. Collect  
-Download global weather data and keep it ready for analysis.
-
-### 2. Understand  
-Look closely at the structure, missing values, and regional coverage.  
-Before finding patterns, we first learn how the data behaves.
-
-### 3. Clean  
-Fix inconsistencies, normalize units, and reshape the dataset so it can actually tell a story.
-
-### 4. Explore  
-Search for:
-
-- Seasonal rhythms  
-- Regional contrasts  
-- Statistical relationships  
-- Signs of extreme weather  
-
-This is where numbers begin turning into meaning.
-
-### 5. Design the visuals  
-Choose visuals that match the question being asked:
-
-- Maps to show **where** patterns appear  
-- Line charts to show **how** things change over time  
-- Scatter plots to reveal **hidden relationships**  
-- Heatmaps to capture **seasonal fingerprints**
-
-### 6. Build the interactive dashboard  
-Using Plotly and Streamlit, the visuals become something users can **touch, filter, and explore** instead of just look at.
-
-### 7. Highlight the insights  
-Surface the moments that matter:
-
-- Temperature spikes  
-- Heavy rainfall regions  
-- Wind extremes  
-- Unexpected anomalies  
-
-### 8. Deliver the final experience  
-A complete, interactive **climate visualization platform**,  
-along with clear documentation of how everything works.
-
+This enables global-scale analysis across seasons, regions, and time.
 
 ---
 
-## Project timeline
+## Project Workflow
 
-**Weeks 1–2**  
-Prepare and clean the dataset until it’s analysis-ready.
+### 1. Data Acquisition
+- Download the dataset from Kaggle.
+- Synchronize daily updates if using the live version.
 
-**Weeks 2–4**  
-Discover patterns, trends, and extreme events.  
-Design how those insights should appear visually.
+### 2. Data Understanding & Exploration
+- Inspect dataset structure and data types.
+- Examine temperature, humidity, precipitation, wind speed, and geographic coverage.
+- Identify missing values and anomalies.
+
+### 3. Data Cleaning & Preprocessing
+- Handle missing or inconsistent entries.
+- Normalize units where required.
+- Aggregate data (e.g., daily to monthly averages) for efficiency.
+
+### 4. Data Analysis
+- Perform statistical analysis of distributions and correlations.
+- Identify seasonal trends and long-term patterns.
+- Detect extreme weather events.
+- Compare weather conditions across countries and regions.
+
+### 5. Visualization Design
+- Choropleth maps for geographic patterns.
+- Line charts for time-series trends.
+- Scatter plots for correlation analysis.
+- Heatmaps for seasonal variation.
+- Design dashboard layout and interaction flow.
+
+### 6. Visualization Development
+- Build interactive charts using Plotly.
+- Develop dashboard using Streamlit.
+- Integrate filters, sliders, and region selectors.
+- Improve aesthetics, labels, and layout clarity.
+
+### 7. Insights Generation
+- Highlight temperature anomalies.
+- Identify high-precipitation zones.
+- Detect wind speed extremes.
+- Summarize global and regional climate trends.
+
+### 8. Final Dashboard & Reporting
+- Deploy dashboard as a web application.
+- Document methodology and findings.
+- Provide structured project report.
+
+---
+
+## Architecture Overview
+
+1. Data downloaded from Kaggle  
+2. Cleaned and processed using Python (pandas)  
+3. Stored as CSV / Parquet files  
+4. Analyzed using statistical methods  
+5. Visualized using Plotly  
+6. Dashboard built using Streamlit  
+
+---
+
+## Tech Stack
+
+### Programming
+- Python 3
+
+### Data Handling
+- pandas
+- Kaggle API
+
+### Visualization
+- Plotly
+- Streamlit
+
+### Storage
+- CSV / Parquet files
+
+### Optional Tools
+- folium
+- python-dotenv
+
+---
+
+# Milestones
+
+## Milestone 1: Data Preparation & Initial Analysis (Weeks 1–2)
+
+### Tasks
+- Download dataset
+- Set up project environment
+- Inspect structure and variables
+- Identify missing values and anomalies
+- Clean and normalize data
+- Aggregate daily data into monthly summaries
+
+### Deliverable
+- Cleaned dataset
+- Summary document outlining schema and data quality
+
+### Success Criteria
+Dataset is fully prepared and ready for deeper analysis.
+
+---
+
+## Milestone 2: Core Analysis & Visualization Design (Weeks 2–4)
+
+### Tasks
+- Perform statistical analysis
+- Identify seasonal trends and correlations
+- Detect extreme weather events
+- Compare regional climate behavior
+- Select appropriate visualization types
+- Design dashboard wireframes
+
+### Deliverable
+- Analytical findings report
+- Dashboard wireframes/mockups
+
+### Success Criteria
+Clear insights derived and well-structured dashboard design.
+
+---
+
+## Milestone 3: Visualization Development & Interactivity (Weeks 4–6)
+
+### Tasks
+- Build interactive visualizations using Plotly
+- Develop dashboard in Streamlit
+- Integrate filters and region selectors
+- Refine UI and visualization clarity
+- Highlight key climate insights
+
+### Deliverable
+- Near-complete interactive dashboard prototype
+
+### Success Criteria
+All major visualizations implemented with functional interactivity.
+Dashboard clearly communicates seasonal trends and extreme events.
