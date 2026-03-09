@@ -1,4 +1,4 @@
-# Global Income Inequality Analysis Dashboard
+# Climate change Analysis Dashboard
 
 ## Overview
 This project analyzes income inequality across countries using data analytics and visualization.  
