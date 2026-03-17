@@ -1,4 +1,4 @@
-# ClimateScope
+
 # ClimateScope: Visualizing Global Weather Trends & Extreme Events
 
 ## Project Overview
