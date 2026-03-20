@@ -1,143 +1,137 @@
+
+
+
 # import streamlit as st
 # import plotly.express as px
 # from utils.load_data import load_data
 
-# st.title("🚨 Extreme Weather Events")
+# px.defaults.template = "plotly_dark"
+
+# st.title("🚨 Extreme Events")
 
 # df = load_data()
 
-# extreme = df[
-#     (df["temperature_celsius"] > 40) |
-#     (df["precip_mm"] > 100) |
-#     (df["wind_kph"] > 60)
-# ]
+# extreme = df[(df["temperature_celsius"]>40) |
+#              (df["precip_mm"]>50) |
+#              (df["wind_kph"]>60)]
 
-# st.metric("Total Extreme Events Detected", len(extreme))
+# st.metric("Events", len(extreme))
 
-# # Scatter Plot
-# fig_scatter = px.scatter(
-#     extreme,
-#     x="temperature_celsius",
-#     y="precip_mm",
-#     color="country",
-#     size="wind_kph",
-#     title="Extreme Weather Events Distribution"
-# )
+# # ---------------- BAR ----------------
+# fig = px.bar(extreme.groupby("country").size().reset_index(name="events"),
+#              x="country", y="events", color="events")
+# st.plotly_chart(fig)
 
-# st.plotly_chart(fig_scatter)
+# # ---------------- HEATMAP ----------------
+# heat = extreme.groupby(["month","country"]).size().reset_index(name="events")
 
-# # Bar Chart
-# st.subheader("Extreme Events by Country")
+# fig = px.density_heatmap(heat, x="month", y="country", z="events")
+# st.plotly_chart(fig)
 
-# event_count = extreme.groupby("country").size().reset_index(name="events")
+# # ---------------- SCATTER ----------------
+# fig = px.scatter(extreme, x="temperature_celsius", y="precip_mm",
+#                  size="wind_kph", color="country")
+# st.plotly_chart(fig)
 
-# fig_bar = px.bar(
-#     event_count,
-#     x="country",
-#     y="events",
-#     title="Extreme Weather Events Count"
-# )
-
-# st.plotly_chart(fig_bar)
-
-# # Pie Chart
-# fig_pie = px.pie(
-#     event_count,
-#     names="country",
-#     values="events",
-#     title="Extreme Events Share"
-# )
-
-# st.plotly_chart(fig_pie)
 
 
 
 
 import streamlit as st
 import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
 from utils.load_data import load_data
 
-st.title("🚨 Extreme Weather Events Analysis")
+px.defaults.template = "plotly_dark"
 
-# Load dataset
+st.title("🌧 Precipitation & Wind Analysis")
+
 df = load_data()
 
-# Detect extreme events
-extreme = df[
-    (df["temperature_celsius"] > 40) |
-    (df["precip_mm"] > 50) |
-    (df["wind_kph"] > 60)
-]
+# ---------------- SEARCH + ALL ----------------
+st.subheader("🔎 Search / Select Country")
 
-# KPI metric
-st.metric("Total Extreme Events Detected", len(extreme))
+all_countries = sorted(df["country"].unique())
 
-
-# ---------------- BAR CHART ----------------
-st.subheader("Top Countries with Extreme Events")
-
-event_counts = extreme.groupby("country").size().reset_index(name="events")
-
-fig_bar = px.bar(
-    event_counts.sort_values("events", ascending=False).head(15),
-    x="country",
-    y="events",
-    color="events",
-    title="Extreme Events by Country",
-    color_continuous_scale="Reds"
+selected = st.selectbox(
+    "Select Country",
+    ["All"] + all_countries
 )
 
-st.plotly_chart(fig_bar, use_container_width=True)
+if selected != "All":
+    df = df[df["country"] == selected]
 
+search_text = st.text_input("Type to search (optional)")
 
-# ---------------- PIE CHART ----------------
-st.subheader("Extreme Event Type Distribution")
+if search_text:
+    df = df[df["country"].str.contains(search_text, case=False)]
 
-df["event_type"] = "Normal"
+# ---------------- VALIDATION ----------------
+if len(df) == 0:
+    st.warning("No data available for selected filters")
+    st.stop()
 
-df.loc[df["temperature_celsius"] > 40, "event_type"] = "Heatwave"
-df.loc[df["precip_mm"] > 50, "event_type"] = "Heavy Rain"
-df.loc[df["wind_kph"] > 60, "event_type"] = "Storm"
+# ---------------- CORRELATION HEATMAP ----------------
+st.subheader("🔥 Weather Correlation Heatmap")
 
-event_type_counts = df["event_type"].value_counts().reset_index()
-event_type_counts.columns = ["event_type", "count"]
+corr = df[["temperature_celsius","precip_mm","wind_kph","humidity"]].corr()
 
-fig_pie = px.pie(
-    event_type_counts,
-    names="event_type",
-    values="count",
-    title="Extreme Weather Event Types"
+fig, ax = plt.subplots()
+sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
+st.pyplot(fig)
+
+# ---------------- WIND HISTOGRAM ----------------
+st.subheader("🌪 Wind Speed Distribution")
+
+fig_wind = px.histogram(
+    df,
+    x="wind_kph",
+    color="country",
+    nbins=20,
+    title="Wind Speed Distribution"
 )
 
-st.plotly_chart(fig_pie)
+st.plotly_chart(fig_wind, use_container_width=True)
 
+# ---------------- RAINFALL DENSITY ----------------
+st.subheader("🌧 Rainfall Density Analysis")
 
-# ---------------- SCATTER CHART ----------------
-st.subheader("Temperature vs Wind Speed")
+fig_density = px.density_contour(
+    df,
+    x="temperature_celsius",
+    y="precip_mm",
+    color="country",
+    title="Rainfall vs Temperature Density"
+)
 
-fig_scatter = px.scatter(
+st.plotly_chart(fig_density, use_container_width=True)
+
+# ---------------- BUBBLE CHART ----------------
+st.subheader("🫧 Weather Interaction")
+
+fig_bubble = px.scatter(
     df,
     x="temperature_celsius",
     y="wind_kph",
-    color="precip_mm",
     size="precip_mm",
-    title="Weather Interaction"
+    color="humidity",
+    title="Temperature vs Wind vs Rainfall"
 )
 
-st.plotly_chart(fig_scatter, use_container_width=True)
+st.plotly_chart(fig_bubble, use_container_width=True)
 
+# ---------------- MONTHLY RAIN ----------------
+st.subheader("📊 Monthly Rainfall Trend")
 
-# ---------------- MONTHLY TREND ----------------
-st.subheader("Monthly Extreme Weather Trend")
+monthly = df.groupby("month")["precip_mm"].mean().reset_index()
 
-monthly_events = extreme.groupby("month").size().reset_index(name="events")
-
-fig_line = px.line(
-    monthly_events,
+fig_month = px.bar(
+    monthly,
     x="month",
-    y="events",
-    markers=True,
-    title="Extreme Weather Events by Month"
+    y="precip_mm",
+    color="precip_mm",
+    title="Average Monthly Rainfall"
 )
 
-st.plotly_chart(fig_line)
+st.plotly_chart(fig_month, use_container_width=True)
