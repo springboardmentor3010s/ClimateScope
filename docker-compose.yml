@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  climatescope:
+    build: .
+    container_name: climatescope_app
+    ports:
+      - "8501:8501"
+    restart: always
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    volumes:
+      # Optional: Mount your local kaggle.json to the container to enable live data sync
+      # - ~/.kaggle/kaggle.json:/root/.kaggle/kaggle.json:ro
+      # Keep local data cache synchronized
+      - ./data:/app/data
