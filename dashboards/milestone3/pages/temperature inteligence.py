@@ -1,83 +1,108 @@
 import streamlit as st
-import pandas as pd
 import plotly.express as px
 
-st.title("🌡 Temperature Intelligence")
+from utils import CLIMATE_CONTINUOUS, CLIMATE_PALETTE
 
-st.write("This section analyzes temperature patterns, seasonal trends and anomalies.")
 
-df = pd.read_csv("/Users/garikapatiaishwarya/Desktop/climatescope/data/processed/global_weather_cleaned_daily.csv")
+def render(df, selected_country="All", selected_year="All"):
+    st.title("🌡 Temperature Intelligence")
+    st.write("This section analyzes temperature patterns, seasonal trends and anomalies.")
 
-# KPIs
-avg_temp = df["temperature_celsius"].mean()
-max_temp = df["temperature_celsius"].max()
-min_temp = df["temperature_celsius"].min()
+    filtered = df.copy()
+    if selected_country != "All":
+        filtered = filtered[filtered["country"] == selected_country]
+    if selected_year != "All":
+        filtered = filtered[filtered["year"] == selected_year]
 
-baseline = df["temperature_celsius"].mean()
-current = df[df["year"] == df["year"].max()]["temperature_celsius"].mean()
+    # KPIs
+    avg_temp = filtered["temperature_celsius"].mean()
+    max_temp = filtered["temperature_celsius"].max()
+    min_temp = filtered["temperature_celsius"].min()
 
-anomaly = current - baseline
+    baseline = filtered["temperature_celsius"].mean()
+    current = filtered[filtered["year"] == filtered["year"].max()]["temperature_celsius"].mean()
 
-trend = df.groupby("year")["temperature_celsius"].mean()
+    anomaly = current - baseline
 
-if len(trend) >= 5:
-    five_year = ((trend.iloc[-1] - trend.iloc[-5]) / trend.iloc[-5]) * 100
-else:
-    five_year = 0
+    trend = filtered.groupby("year")["temperature_celsius"].mean()
 
-c1,c2,c3,c4,c5 = st.columns(5)
+    if len(trend) >= 5:
+        five_year = ((trend.iloc[-1] - trend.iloc[-5]) / trend.iloc[-5]) * 100
+    else:
+        five_year = 0
 
-c1.metric("Avg Temp", round(avg_temp,2))
-c2.metric("Max Temp", round(max_temp,2))
-c3.metric("Min Temp", round(min_temp,2))
-c4.metric("Temperature Anomaly", round(anomaly,2))
-c5.metric("5-Year Trend %", round(five_year,2))
+    c1, c2, c3, c4, c5 = st.columns(5)
 
-# ---------------- TIME SERIES ----------------
+    c1.metric("Avg Temp", round(avg_temp, 2))
+    c2.metric("Max Temp", round(max_temp, 2))
+    c3.metric("Min Temp", round(min_temp, 2))
+    c4.metric("Temperature Anomaly", round(anomaly, 2))
+    c5.metric("5-Year Trend %", round(five_year, 2))
 
-st.subheader("Temperature Trend")
+    # ---------------- TIME SERIES ----------------
+    st.subheader("Temperature Trend")
 
-trend_df = df.groupby("year")["temperature_celsius"].mean().reset_index()
+    trend_df = filtered.groupby("year")["temperature_celsius"].mean().reset_index()
 
-fig = px.line(trend_df, x="year", y="temperature_celsius")
+    fig = px.line(
+        trend_df,
+        x="year",
+        y="temperature_celsius",
+        color_discrete_sequence=CLIMATE_PALETTE,
+    )
+    st.plotly_chart(fig, width="stretch", key="temp_trend")
 
-st.plotly_chart(fig, use_container_width=True)
+    st.info("Insight: This trend illustrates long-term temperature change patterns.")
 
-st.info("Insight: This trend illustrates long-term temperature change patterns.")
+    # ---------------- HEATMAP ----------------
+    st.subheader("Seasonal Temperature Heatmap")
 
-# ---------------- HEATMAP ----------------
+    heat = filtered.pivot_table(values="temperature_celsius", index="year", columns="month")
 
-st.subheader("Seasonal Temperature Heatmap")
+    fig2 = px.imshow(
+        heat,
+        aspect="auto",
+        color_continuous_scale=CLIMATE_CONTINUOUS,
+    )
+    st.plotly_chart(fig2, width="stretch", key="temp_heatmap")
 
-heat = df.pivot_table(values="temperature_celsius", index="year", columns="month")
+    st.info("Insight: Seasonal patterns become visible with hotter months showing stronger intensity.")
 
-fig2 = px.imshow(heat, aspect="auto")
+    # ---------------- HISTOGRAM ----------------
+    st.subheader("Temperature Distribution")
 
-st.plotly_chart(fig2, use_container_width=True)
+    hist = px.histogram(
+        filtered,
+        x="temperature_celsius",
+        nbins=40,
+        color_discrete_sequence=CLIMATE_PALETTE,
+    )
+    st.plotly_chart(hist, width="stretch", key="temp_dist")
 
-st.info("Insight: Seasonal patterns become visible with hotter months showing stronger intensity.")
+    st.info("Insight: This distribution shows how frequently temperature values occur globally.")
 
-# ---------------- HISTOGRAM ----------------
+    # ---------------- MULTI COUNTRY COMPARISON ----------------
+    st.subheader("Country Temperature Comparison")
 
-st.subheader("Temperature Distribution")
+    countries = st.multiselect("Select Countries", sorted(df["country"].unique()))
 
-hist = px.histogram(df, x="temperature_celsius", nbins=40)
+    if countries:
+        comp = df[df["country"].isin(countries)]
 
-st.plotly_chart(hist, use_container_width=True)
+        fig3 = px.line(
+            comp,
+            x="year",
+            y="temperature_celsius",
+            color="country",
+            color_discrete_sequence=CLIMATE_PALETTE,
+        )
+        st.plotly_chart(fig3, width="stretch", key="temp_multi_comp")
 
-st.info("Insight: This distribution shows how frequently temperature values occur globally.")
+        st.info("Insight: Comparing countries helps identify regional climate differences.")
 
-# ---------------- MULTI COUNTRY COMPARISON ----------------
-
-st.subheader("Country Temperature Comparison")
-
-countries = st.multiselect("Select Countries", df["country"].unique())
-
-if countries:
-    comp = df[df["country"].isin(countries)]
-
-    fig3 = px.line(comp, x="year", y="temperature_celsius", color="country")
-
-    st.plotly_chart(fig3, use_container_width=True)
-
-    st.info("Insight: Comparing countries helps identify regional climate differences.")
+    st.markdown(
+        "<div style='text-align:center; margin-top:2rem; font-size:0.9rem; color:rgba(255,255,255,0.8);'>"
+        "<a href='#top' style='color:#80d4ff; text-decoration:none;'>⬆ Back to top</a>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
