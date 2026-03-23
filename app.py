@@ -49,7 +49,7 @@ DATA_PATH_PRIMARY = pathlib.Path("data") / "processed" / "climate_data.csv"
 DATA_PATH_FALLBACK = pathlib.Path("data") / "processed" / "cleaned_global__weather.csv"
 
 
-@st.cache_data(show_spinner=False, ttl=600)
+@st.cache_data(show_spinner=False, ttl=600, max_entries=1)
 def load_data() -> pd.DataFrame:
     """Load and pre-enrich climate dataset."""
     if DATA_PATH_PRIMARY.exists():
@@ -107,6 +107,18 @@ def load_data() -> pd.DataFrame:
     # Heat index (simplified)
     if "feels_like_celsius" in df.columns:
         df["heat_stress"] = df["feels_like_celsius"] - df["temperature_celsius"]
+
+    # --- AGGRESSIVE MEMORY OPTIMIZATION FOR FREE CLOUD LIMITS (512MB RAM) ---
+    float_cols = df.select_dtypes(include=['float64']).columns
+    df[float_cols] = df[float_cols].astype('float32')
+    
+    int_cols = df.select_dtypes(include=['int64']).columns
+    df[int_cols] = df[int_cols].astype('int32')
+    
+    cat_cols = ['country', 'location', 'region', 'timezone', 'condition_text']
+    for col in cat_cols:
+        if col in df.columns:
+            df[col] = df[col].astype('category')
 
     return df
 
