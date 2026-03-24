@@ -57,14 +57,11 @@ def load_data() -> pd.DataFrame:
     elif DATA_PATH_FALLBACK.exists():
         df = pd.read_csv(DATA_PATH_FALLBACK)
     else:
-        try:
-            df = pd.read_csv("D:/climateScope/data/processed/cleaned_global__weather.csv")
-        except FileNotFoundError as exc:
-            raise FileNotFoundError(
-                "No climate data file found. Expected "
-                "'data/processed/climate_data.csv' or "
-                "'data/processed/cleaned_global__weather.csv'."
-            ) from exc
+        raise FileNotFoundError(
+            "No climate data file found. Expected "
+            "'data/processed/climate_data.csv' or "
+            "'data/processed/cleaned_global__weather.csv'."
+        )
 
     # Harmonise date, year, month
     if "last_updated" in df.columns:
@@ -698,13 +695,10 @@ def main():
                 make_chart_layout(fig2, height=450)
                 
                 # Make AI forecast dashed and Historical filled
-                fig2.update_traces(selector=dict(name="Historical"), line=dict(width=3), fill="tozeroy", fillcolor="rgba(99,102,241,0.08)")
-                fig2.update_traces(selector=dict(name="AI Forecast"), line=dict(width=3, dash="dash"))
-                fig2.update_traces(
-                    line=dict(width=3, color="#6366f1"),
-                    fillcolor="rgba(99,102,241,0.08)",
-                    hovertemplate="%{x|%b %Y}<br>Avg: %{y:.2f} °C<extra></extra>",
-                )
+                fig2.update_traces(selector=dict(name="Historical"), line=dict(width=3, color="#6366f1"), fill="tozeroy", fillcolor="rgba(99,102,241,0.08)",
+                    hovertemplate="%{x|%b %Y}<br>Avg: %{y:.2f} °C<extra></extra>")
+                fig2.update_traces(selector=dict(name="AI Forecast"), line=dict(width=3, color="#ec4899", dash="dash"),
+                    hovertemplate="%{x|%b %Y}<br>Forecast: %{y:.2f} °C<extra></extra>")
                 fig2.update_layout(
                     xaxis_title="Date",
                     yaxis_title="Avg Temperature (°C)",
@@ -835,9 +829,9 @@ def main():
                 st.plotly_chart(fig_aq, use_container_width=True, config={"displayModeBar": False})
             else:
                 st.info("No air quality data.")
-        if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
-            st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
-            st.session_state.kpi_buffer = []
+            if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
+                st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
+                st.session_state.kpi_buffer = []
         else:
             st.markdown(
                 """
@@ -874,9 +868,9 @@ def main():
                 st.plotly_chart(fig_rain, use_container_width=True, config={"displayModeBar": False})
             else:
                 st.info("No rainfall data.")
-        if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
-            st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
-            st.session_state.kpi_buffer = []
+            if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
+                st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
+                st.session_state.kpi_buffer = []
 
     # ---------- THIRD ROW: Humidity/UV/Wind charts ----------
     section_header("🌤", "Environmental Conditions")
@@ -932,9 +926,9 @@ def main():
                 hovertemplate="Humidity: %{x}%<br>Count: %{y}<extra></extra>",
             )
             st.plotly_chart(fig_h, use_container_width=True, config={"displayModeBar": False})
-        if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
-            st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
-            st.session_state.kpi_buffer = []
+            if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
+                st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
+                st.session_state.kpi_buffer = []
         else:
             st.markdown(
                 """
@@ -950,9 +944,9 @@ def main():
                 make_chart_layout(fig_w, height=450)
                 fig_w.update_layout(xaxis_title="Date", yaxis_title="Avg Wind (kph)")
                 st.plotly_chart(fig_w, use_container_width=True, config={"displayModeBar": False})
-        if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
-            st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
-            st.session_state.kpi_buffer = []
+            if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
+                st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
+                st.session_state.kpi_buffer = []
 
     with env_col3:
         if "uv_index" in df_filtered.columns:
@@ -988,9 +982,9 @@ def main():
                 st.plotly_chart(fig_uv, use_container_width=True, config={"displayModeBar": False})
             else:
                 st.info("No UV data.")
-        if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
-            st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
-            st.session_state.kpi_buffer = []
+            if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
+                st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
+                st.session_state.kpi_buffer = []
         else:
             st.markdown(
                 """
@@ -1011,9 +1005,9 @@ def main():
                 """,
                 unsafe_allow_html=True,
             )
-        if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
-            st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
-            st.session_state.kpi_buffer = []
+            if "kpi_buffer" in st.session_state and st.session_state.kpi_buffer:
+                st.markdown(f"<div class='kpi-grid'>{''.join(st.session_state.kpi_buffer)}</div>", unsafe_allow_html=True)
+                st.session_state.kpi_buffer = []
 
     # ---------- FOURTH ROW: Extreme Events & Wind ----------
     section_header("⚡", "Extreme Events & Wind Analysis")
@@ -1095,14 +1089,14 @@ def main():
 if __name__ == "__main__":
     pages = [
         st.Page(main, title="Home", icon="🏠"),
-        st.Page("pages/7_Predictive_Analytics.py", title="Predictive", icon="🔮"),
-        st.Page("pages/8_Economic_Impact_Model.py", title="Economics", icon="💰"),
-        st.Page("pages/Climate_Risk_Intelligence.py", title="Risk Intel", icon="⚠️"),
         st.Page("pages/Executive_Overview.py", title="Executive", icon="📋"),
-        st.Page("pages/Extreme_Events_Monitor.py", title="Extremes", icon="🚨"),
-        st.Page("pages/Precipitation_Wind_Intelligence.py", title="Wind & Rain", icon="🌧️"),
-        st.Page("pages/Regional_Comparison.py", title="Compare", icon="🗺️"),
         st.Page("pages/Temperature_Intelligence.py", title="Temp Intel", icon="🌡️"),
+        st.Page("pages/Precipitation_Wind_Intelligence.py", title="Wind & Rain", icon="🌧️"),
+        st.Page("pages/Extreme_Events_Monitor.py", title="Extremes", icon="🚨"),
+        st.Page("pages/Regional_Comparison.py", title="Compare", icon="🗺️"),
+        st.Page("pages/Climate_Risk_Intelligence.py", title="Risk Intel", icon="⚠️"),
+        st.Page("pages/8_Economic_Impact_Model.py", title="Economics", icon="💰"),
+        st.Page("pages/7_Predictive_Analytics.py", title="Predictive", icon="🔮"),
     ]
     pg = st.navigation(pages, position="top")
     pg.run()

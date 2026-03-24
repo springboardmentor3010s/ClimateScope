@@ -8,7 +8,7 @@ from app import load_data, load_css, global_filters, render_kpi, section_header,
 
 def generate_correlation_matrix(df: pd.DataFrame) -> pd.DataFrame:
     """Generate a correlation matrix for key numerical variables."""
-    numeric_cols = ["temperature_celsius", "humidity", "wind_kph", "precip_mm", "uv_index", "air_quality_pm2_5", "risk_score", "has_extreme_event"]
+    numeric_cols = ["temperature_celsius", "humidity", "wind_kph", "precip_mm", "uv_index", "air_quality_PM2.5", "risk_score", "has_extreme_event"]
     cols_present = [c for c in numeric_cols if c in df.columns]
     return df[cols_present].corr()
 
