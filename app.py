@@ -175,10 +175,11 @@ def global_filters(df: pd.DataFrame):
         if st.button("🔄 Force Data Sync", use_container_width=True, help="Triggers Kaggle API to fetch latest weather intelligence"):
             with st.spinner("Syncing latest intelligence..."):
                 import subprocess
+                import sys
                 project_root = pathlib.Path(__file__).parent
                 script_path = project_root / "scripts" / "update_weather_data.py"
                 try:
-                    result = subprocess.run(["python", str(script_path)], capture_output=True, text=True)
+                    result = subprocess.run([sys.executable, str(script_path)], capture_output=True, text=True)
                     if result.returncode == 0:
                         st.success("✅ Intelligence Synced! Refreshing...")
                         st.rerun()

@@ -14,16 +14,34 @@ def download_and_process_data():
     Downloads the Global Weather Repository dataset from Kaggle,
     processes it according to the established schema, and saves it.
     """
+    project_root = pathlib.Path(__file__).parent.parent
     user_home = os.path.expanduser("~")
     kaggle_dir = os.path.join(user_home, ".kaggle")
-    kaggle_json = os.path.join(kaggle_dir, "kaggle.json")
-    
-    if not os.path.exists(kaggle_json):
-        logger.error(f"Kaggle API token not found at {kaggle_json}.")
-        logger.error("Please download 'kaggle.json' from your Kaggle account settings and place it in the ~/.kaggle/ directory.")
-        return False
 
-    project_root = pathlib.Path(__file__).parent.parent
+    # Check for environment variables first (Cloud Deployment Safe)
+    if 'KAGGLE_USERNAME' in os.environ and 'KAGGLE_KEY' in os.environ:
+        logger.info("Using Kaggle credentials from environment variables.")
+    else:
+        # Check project root first, then ~/.kaggle/ for local development
+        project_kaggle_json = project_root / "kaggle.json"
+        home_kaggle_json = pathlib.Path(kaggle_dir) / "kaggle.json"
+        
+        if project_kaggle_json.exists():
+            kaggle_json = str(project_kaggle_json)
+        elif home_kaggle_json.exists():
+            kaggle_json = str(home_kaggle_json)
+        else:
+            logger.error("Kaggle credentials not found in environment variables.")
+            logger.error(f"Also, 'kaggle.json' not found at {project_kaggle_json} or {home_kaggle_json}.")
+            logger.error("Please ensure 'kaggle.json' is present or environment variables are set.")
+            import sys; sys.exit(1)
+            
+        import json
+        with open(kaggle_json, 'r') as f:
+            creds = json.load(f)
+            os.environ['KAGGLE_USERNAME'] = creds['username']
+            os.environ['KAGGLE_KEY'] = creds['key']
+
     raw_data_dir = project_root / "data" / "raw"
     processed_data_dir = project_root / "data" / "processed"
     
@@ -35,12 +53,6 @@ def download_and_process_data():
     csv_filename = "GlobalWeatherRepository.csv"
     
     try:
-        import json
-        with open(kaggle_json, 'r') as f:
-            creds = json.load(f)
-            os.environ['KAGGLE_USERNAME'] = creds['username']
-            os.environ['KAGGLE_KEY'] = creds['key']
-            
         from kaggle.api.kaggle_api_extended import KaggleApi
         api = KaggleApi()
         api.authenticate()
@@ -50,14 +62,14 @@ def download_and_process_data():
         
         if not raw_csv_path.exists():
             logger.error(f"Expected file {csv_filename} not found after download.")
-            return False
+            import sys; sys.exit(1)
             
     except Exception as e:
         logger.warning(f"Using cached raw data. Could not fetch from Kaggle: {e}")
         raw_csv_path = raw_data_dir / csv_filename
         if not raw_csv_path.exists():
              logger.error("No cached raw data found either. Aborting.")
-             return False
+             import sys; sys.exit(1)
 
     logger.info("Processing data...")
     try:
@@ -81,7 +93,7 @@ def download_and_process_data():
         
     except Exception as e:
         logger.error(f"Error processing dataset: {e}")
-        return False
+        import sys; sys.exit(1)
 
     return True
 
