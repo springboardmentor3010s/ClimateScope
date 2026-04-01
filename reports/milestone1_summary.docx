@@ -1,0 +1,69 @@
+Milestone 1 Summary Report
+ClimateScope – Milestone 1: Data Preparation & Initial Analysis
+
+1. Objective
+
+The objective of Milestone 1 was to prepare and preprocess the Global Weather Repository dataset for further statistical analysis and visualization. This included downloading the dataset, inspecting its structure, cleaning inconsistencies, handling missing values, standardizing measurement units, and transforming the data into an analysis-ready format.
+
+2. Dataset Overview
+
+The dataset contains daily weather observations across multiple countries and regions.
+Key variables include:
+
+Temperature
+
+Humidity
+
+Wind speed
+
+Precipitation
+
+Timestamp (last_updated)
+
+Country/region information
+
+These variables enable temporal, regional, and extreme-event analysis in later stages.
+
+3. Data Cleaning and Preprocessing Steps
+
+The following preprocessing steps were performed:
+
+Converted date/time fields into proper datetime format
+
+Inspected column names, data types, and structure
+
+Identified and handled missing values using appropriate strategies
+
+Standardized temperature to Celsius and wind speed to km/h
+
+Removed or corrected inconsistent or impossible entries
+
+Detected potential outliers in temperature and precipitation
+
+Aggregated daily data into monthly summaries for seasonal trend analysis
+
+4. Data Quality Issues Identified
+
+During preprocessing, several issues were observed:
+
+Minor missing values in humidity and precipitation columns
+
+Inconsistent timestamp formatting before conversion
+
+Extreme outlier temperature readings in a small number of rows
+
+All issues were addressed to ensure reliable downstream analysis.
+
+5. Output of Milestone 1
+
+The final outputs generated:
+
+Cleaned daily dataset: cleaned_daily_weather.csv
+
+Monthly aggregated dataset: monthly_weather.csv
+
+Both files were stored inside the processed data directory and are ready for analytical use in Milestone 2.
+
+6. Milestone 1 Conclusion
+
+Milestone 1 successfully transformed raw weather data into a clean, structured, and analysis-ready dataset, forming a strong foundation for statistical exploration, extreme-event detection, and visualization design in the next phase.
