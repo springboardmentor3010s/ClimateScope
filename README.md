@@ -1,3 +1,6 @@
+
+<<<<<<< HEAD
+=======
 ClimateScope is a weather data analysis project created during the Infosys Springboard Internship.  
 The project focuses on preparing global weather data for analysis and visualization.
 
@@ -49,3 +52,5 @@ Output:
 Tools Used:
 Python, Pandas, Matplotlib, Seaborn
 
+
+>>>>>>> 99a5871 (Initial project upload)
