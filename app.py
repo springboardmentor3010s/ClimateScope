@@ -182,6 +182,7 @@ def global_filters(df: pd.DataFrame):
                     result = subprocess.run([sys.executable, str(script_path)], capture_output=True, text=True)
                     if result.returncode == 0:
                         st.success("✅ Intelligence Synced! Refreshing...")
+                        load_data.clear() 
                         st.rerun()
                     else:
                          st.error(f"❌ Sync Failed. Check logs.\n{result.stderr}")
