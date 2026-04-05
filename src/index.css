@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 17% 98%;
+    --foreground: 210 11% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 11% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 11% 15%;
+
+    --primary: 215 28% 17%;
+    --primary-foreground: 210 17% 98%;
+
+    --secondary: 210 14% 92%;
+    --secondary-foreground: 210 11% 15%;
+
+    --muted: 210 14% 92%;
+    --muted-foreground: 210 9% 50%;
+
+    --accent: 210 16% 95%;
+    --accent-foreground: 210 11% 15%;
+
+    --destructive: 4 90% 58%;
+    --destructive-foreground: 210 17% 98%;
+
+    --border: 210 18% 90%;
+    --input: 210 18% 87%;
+    --ring: 215 28% 17%;
+
+    --radius: 0.5rem;
+
+    /* Terraforma custom tokens */
+    --canvas: 216 20% 97%;
+    --canvas-subtle: 216 18% 94%;
+    --structure: 210 10% 71%;
+    --structure-light: 210 16% 95%;
+    --charcoal: 210 11% 31%;
+
+    /* Data colors */
+    --data-cold: 209 95% 40%;
+    --data-hot: 0 85% 55%;
+    --data-neutral: 210 10% 71%;
+    --data-precip: 200 90% 45%;
+    --data-wind: 220 15% 40%;
+
+    /* Status colors */
+    --success: 152 60% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --danger: 0 72% 51%;
+    --danger-foreground: 0 0% 100%;
+    --info: 209 95% 50%;
+    --info-foreground: 0 0% 100%;
+
+    /* Chart palette — more vibrant */
+    --chart-1: 209 95% 45%;
+    --chart-2: 0 85% 55%;
+    --chart-3: 152 60% 42%;
+    --chart-4: 38 92% 50%;
+    --chart-5: 270 70% 58%;
+    --chart-6: 180 70% 40%;
+
+    /* Interactive states */
+    --hover: 210 16% 95%;
+    --active: 210 14% 90%;
+
+    /* Glass effect */
+    --glass: 0 0% 100%;
+    --glass-border: 210 20% 88%;
+
+    /* Gradients */
+    --gradient-warm: linear-gradient(135deg, hsl(0, 85%, 55%), hsl(38, 92%, 50%));
+    --gradient-cool: linear-gradient(135deg, hsl(209, 95%, 45%), hsl(180, 70%, 40%));
+    --gradient-neutral: linear-gradient(135deg, hsl(210, 14%, 92%), hsl(210, 16%, 95%));
+
+    --sidebar-background: 216 20% 97%;
+    --sidebar-foreground: 210 11% 15%;
+    --sidebar-primary: 215 28% 17%;
+    --sidebar-primary-foreground: 210 17% 98%;
+    --sidebar-accent: 210 16% 95%;
+    --sidebar-accent-foreground: 210 11% 15%;
+    --sidebar-border: 210 18% 90%;
+    --sidebar-ring: 215 28% 17%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-canvas text-foreground font-body antialiased;
+  }
+
+  /* Smooth scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(210, 10%, 80%);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(210, 10%, 65%);
+  }
+}
+
+@layer utilities {
+  .font-mono-data {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .font-body {
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  .bg-canvas {
+    background-color: hsl(var(--canvas));
+  }
+
+  .bg-canvas-subtle {
+    background-color: hsl(var(--canvas-subtle));
+  }
+
+  .text-structure {
+    color: hsl(var(--structure));
+  }
+
+  .border-structure {
+    border-color: hsl(var(--structure));
+  }
+
+  .text-charcoal {
+    color: hsl(var(--charcoal));
+  }
+
+  .bg-hover {
+    background-color: hsl(var(--hover));
+  }
+
+  .bg-active {
+    background-color: hsl(var(--active));
+  }
+
+  .text-data-cold {
+    color: hsl(var(--data-cold));
+  }
+
+  .text-data-hot {
+    color: hsl(var(--data-hot));
+  }
+
+  .bg-structure-light {
+    background-color: hsl(var(--structure-light));
+  }
+
+  /* Glass card effect */
+  .glass-card {
+    background: hsl(var(--glass) / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--glass-border));
+  }
+
+  /* Subtle card shadow */
+  .card-elevated {
+    box-shadow: 0 1px 3px 0 hsl(210 10% 20% / 0.04), 0 1px 2px -1px hsl(210 10% 20% / 0.04);
+  }
+
+  .card-elevated-lg {
+    box-shadow: 0 4px 12px -2px hsl(210 10% 20% / 0.06), 0 2px 6px -2px hsl(210 10% 20% / 0.04);
+  }
+
+  /* Section header style */
+  .section-header {
+    @apply font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground font-semibold;
+  }
+
+  /* Dashboard chart card */
+  .chart-card {
+    @apply rounded-xl border border-border bg-card p-5 card-elevated transition-shadow duration-200;
+  }
+
+  .chart-card:hover {
+    box-shadow: 0 6px 16px -4px hsl(210 10% 20% / 0.08), 0 2px 8px -2px hsl(210 10% 20% / 0.04);
+  }
+
+  /* Gradient text */
+  .gradient-text-warm {
+    background: linear-gradient(135deg, hsl(0, 85%, 55%), hsl(38, 92%, 50%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-cool {
+    background: linear-gradient(135deg, hsl(209, 95%, 45%), hsl(180, 70%, 40%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
