@@ -81,7 +81,7 @@ Render (Cloud Platform)
 
 ⚙️ Installation & Setup
 1️⃣ Clone Repository
-git clone https://github.com/your-username/climateScope.git
+git clone https://github.com/Gaurav-Chauhan/climateScope.git
 cd climateScope
 2️⃣ Install Dependencies
 pip install -r requirements.txt
